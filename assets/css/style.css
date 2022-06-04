@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+    --c-alpha: #818CF8;
+    --c-beta: #F1F5F9;
+    --c-gamma: #FFFFFF;
+    --c-delta: #E4EDFB;
+    --c-text-alpha: #FFFFFF;
+    --c-text-beta: #5B5B5B;
+    --c-text-gamma: #000000;
+    --c-input: #FFFFFF;
+    --c-input-border: #CBCBCB;
+    --c-btn-add: #10B981;
+    --c-btn-clear: #FF5858;
+    --c-btn-remove: #FF5858;
+    --c-checkbox-checked: #5B21B6;
+    --block-padding: 3rem;
+}
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+body {
+    background-color: var(--c-beta);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+.page-title {
+    background-color: var(--c-alpha);
+    height: 4.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page-title > svg {
+    width: 48px;
+    height: 48px;
+    margin: 1rem;
+    color: var(--c-text-alpha);
+}
+.page-title > h2 {
+    margin: 0;
+    color: var(--c-text-alpha);
+    font-size: clamp(1.5rem, 5vw, 2.8rem);
+}
+.add-a-book {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: var(--block-padding);
+}
+.add-a-book > form {
+    background-color: var(--c-gamma);
+    width: 50%;
+    padding: 2rem 3.5rem 2rem 3.5rem; 
+    width: 100%;
+}
+.book-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.7rem;
+    border-radius: 10px;
+}
+.form-title {
+    color: var(--c-text-beta);
+    font-size: 1.5rem;
+    margin: 0;
+}
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+.form-row > label {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--c-text-gamma);
+}
+.form-row > input[type="text"],
+            input[type="number"] {
+    min-width: 10rem;
+    border: 2px solid var(--c-input-border);
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    color: var(--c-text-beta)
+}
+.form-row-buttons {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 1rem;
+}
+.form-row-buttons > button {
+    padding: 0.4rem 2.2rem;
+    border: none;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.form-row-buttons > button.add {
+    background-color: var(--c-btn-add);
+    color: var(--c-text-alpha);
+}
+.form-row-buttons > button.clear {
+    background-color: var(--c-btn-clear);
+    color: var(--c-text-alpha);
+}
+.book-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--block-padding);
+}
+table {
+    width: 100%;
+    border-bottom: 5px solid var(--c-alpha);
+    border-collapse: collapse;
+}
+table th, td {
+    padding: 0 2rem;
+}
+table th {
+    height: 3rem;
+    text-align: left;
+    background-color: var(--c-alpha);
+    color: var(--c-text-alpha);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+table tr td {
+    height: 2.5rem;
+    color: var(--c-text-beta);
+    font-weight: 400;
+    font-size: 0.875rem;
+}
+table tr:nth-child(2n+1) {
+    background-color: var(--c-beta);
+}
+table tr:nth-child(2n+2) {
+    background-color: var(--c-delta);
+}
+.remove {
+    background-color: var(--c-btn-remove);
+    padding: 0.4rem 2.2rem;
+    border: none;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 4px;
+    color: var(--c-text-alpha);
+}
+input[type="checkbox"] {
+    height: 16px;
+    width: 16px;
+    accent-color: var(--c-checkbox-checked);
+}
