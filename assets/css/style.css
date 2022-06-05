@@ -84,7 +84,7 @@ body {
 }
 .form-row > input[type="text"],
             input[type="number"] {
-    min-width: 10rem;
+    max-width: 75%;
     border: 2px solid var(--c-input-border);
     border-radius: 5px;
     padding: 5px;
