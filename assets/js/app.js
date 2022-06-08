@@ -13,8 +13,8 @@ function Book(read, index, title, author, pages) {
 }
 
 Book.prototype.toggleRead = function () {
-  this.read != this.read;
-  console.log(`Read property toggled for book ${this.index}`);
+  this.read = !this.read;
+  console.log(`Read property toggled for book ${this.index}. Read set to ${this.read}`);
 }
 
 addBtn.addEventListener("click", () => {
@@ -76,10 +76,10 @@ function displayBooks() {
     <td>${book.author}</td>
     <td>${book.pages}</td>
     <td>
-      <input type="checkbox" name="read" data-index="${book.index}">
+      <input type="checkbox" name="read" data-index="${book.index}" onclick=toggleReadProperty(this)>
     </td>
     <td>
-      <button class="remove" type="button" data-index="${book.index}" onclick="removeBook(this)">Remove</button>
+      <button class="remove" type="button" onclick="removeBook(this)">Remove</button>
     </td>
   </tr>`
   });
@@ -98,4 +98,11 @@ function removeBook(obj) {
   // Find index of book that matches parentRowIndex and remove it from the library array
   const foundBookIndex = myLibrary.find(book => book.index == parentRowIndex);
   myLibrary.splice(foundBookIndex, 1);
+}
+
+function toggleReadProperty(obj) {
+  // Find book that is read toggled 
+  const foundBook = myLibrary.find(book => book.index == obj.dataset.index);
+  // Toggle read using the constructor function for the object
+  foundBook.toggleRead();
 }
