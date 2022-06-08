@@ -12,6 +12,11 @@ function Book(read, index, title, author, pages) {
   this.read = read;
 }
 
+Book.prototype.toggleRead = function () {
+  this.read != this.read;
+  console.log(`Read property toggled for book ${this.index}`);
+}
+
 addBtn.addEventListener("click", () => {
   setBook();
   addBookToLibrary();
@@ -23,9 +28,9 @@ clearBtn.addEventListener("click", () => {
 })
 
 function clearFields() {
-  const titleVal = document.getElementById("book-title").value = "";
-  const authorVal = document.getElementById("book-author").value = "";
-  const pagesVal = document.getElementById("book-pages").value = "";
+  document.getElementById("book-title").value = "";
+  document.getElementById("book-author").value = "";
+  document.getElementById("book-pages").value = "";
 }
 
 function getInputValues() {
@@ -58,7 +63,6 @@ function setBook() {
 function addBookToLibrary() {
   let book = setBook();
   myLibrary.push(book);
-  console.log(myLibrary)
 
   indexCount++;
 }
@@ -67,18 +71,31 @@ function displayBooks() {
   let content = "";
 
   myLibrary.forEach(book => {
-    content += `<tr>
+    content += `<tr data-index="${book.index}">
     <td>${book.title}</td>
     <td>${book.author}</td>
     <td>${book.pages}</td>
     <td>
-      <input type="checkbox" name="read">
+      <input type="checkbox" name="read" data-index="${book.index}">
     </td>
     <td>
-      <button class="remove" type="button">Remove</button>
+      <button class="remove" type="button" data-index="${book.index}" onclick="removeBook(this)">Remove</button>
     </td>
   </tr>`
   });
   
   bookTableBody.innerHTML = content;
+}
+
+function removeBook(obj) {
+  // Get the row of the corresponding remove button
+  const parentRow = obj.parentNode.parentNode;
+  
+  let parentRowIndex = parentRow.dataset.index;
+
+  parentRow.remove();
+
+  // Find index of book that matches parentRowIndex and remove it from the library array
+  const foundBookIndex = myLibrary.find(book => book.index == parentRowIndex);
+  myLibrary.splice(foundBookIndex, 1);
 }
