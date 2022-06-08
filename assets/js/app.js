@@ -3,6 +3,7 @@ let indexCount = 1;
 const addBtn = document.getElementById("btn_add");
 const clearBtn = document.getElementById("btn_clear");
 const bookTableBody = document.getElementById("book_table_body");
+const feedbackMsg = document.querySelector(".feedback-msg");
 
 function Book(read, index, title, author, pages) {
   this.index = index;
@@ -37,6 +38,7 @@ function getInputValues() {
   const titleVal = document.getElementById("book-title").value;
   const authorVal = document.getElementById("book-author").value;
   const pagesVal = document.getElementById("book-pages").value;
+
   const inputValues = {
     title: titleVal,
     author: authorVal,
@@ -49,6 +51,7 @@ function getInputValues() {
 // Creates a new book object and sets it to form field values
 function setBook() {
   let inputVals = getInputValues();
+
   // Create a book object from the Book prototype
   let book = Object.create(Book.prototype);
   book.index = indexCount;
@@ -62,12 +65,17 @@ function setBook() {
 
 function addBookToLibrary() {
   let book = setBook();
+
+  // Check if the input values are empty
+  if (book.title === "" || book.author === "" || book.pages === "") return;
+  
   myLibrary.push(book);
 
   indexCount++;
 }
 
 function displayBooks() {
+
   let content = "";
 
   myLibrary.forEach(book => {
