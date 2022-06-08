@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/normalize.css">
     <link rel="stylesheet" href="./assets/css/style.css">
-    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/app.js" defer></script>
     <title>Library</title>
 </head>
 <body>
@@ -21,15 +21,15 @@
             <p class="form-title">Add A Book</p>
             <div class="form-row">
                 <label for="book-title">Book Title</label>
-                <input type="text" name="book-title" id="book-title" required>
+                <input type="text" name="book-title" id="book-title" minlength="1" required>
             </div>
             <div class="form-row">
                 <label for="book-author">Author</label>
-                <input type="text" name="book-author" id="book-author" required>
+                <input type="text" name="book-author" id="book-author" minlength="1" required>
             </div>
             <div class="form-row">
                 <label for="book-pages">Pages</label>
-                <input type="number" name="book-pages" id="book-pages" required>
+                <input type="number" name="book-pages" id="book-pages" min="1" required>
             </div>
             <div class="form-row-buttons">
                 <button id="btn_clear" class="clear" type="button">Clear</button>
@@ -48,18 +48,8 @@
                     <th scope="col">Remove</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Something</td>
-                    <td>Something</td>
-                    <td>45</td>
-                    <td>
-                        <input type="checkbox" id="mark_as_read" name="read">
-                    </td>
-                    <td>
-                        <button class="remove" id="mark_read" type="button">Remove</button>
-                    </td>
-                </tr>
+            <tbody id="book_table_body">
+
             </tbody>
         </table>
     </section>
