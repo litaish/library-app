@@ -5,18 +5,20 @@ const clearBtn = document.getElementById("btn_clear");
 const bookTableBody = document.getElementById("book_table_body");
 const feedbackMsg = document.querySelector(".feedback-msg");
 
-function Book(read, index, title, author, pages) {
-  this.index = index;
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+class Book {
+  constructor(read, index, title, author, pages) {
+    this.index = index;
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
+  toggleRead() {
+    this.read = !this.read;
+    console.log(`Read property toggled for book ${this.index}. Read set to ${this.read}`);
+  }
 }
 
-Book.prototype.toggleRead = function () {
-  this.read = !this.read;
-  console.log(`Read property toggled for book ${this.index}. Read set to ${this.read}`);
-}
 
 addBtn.addEventListener("click", () => {
   setBook();
