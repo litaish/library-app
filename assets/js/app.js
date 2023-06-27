@@ -1,13 +1,48 @@
+import { db } from './firebase-config.js';
+import { collection, getDocs, addDoc, updateDoc, doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js'
+
+const booksCollectionRef = collection(db, 'books');
+
 let myLibrary = [];
-let indexCount = 1;
 const addBtn = document.getElementById("btn_add");
 const clearBtn = document.getElementById("btn_clear");
 const bookTableBody = document.getElementById("book_table_body");
-const feedbackMsg = document.querySelector(".feedback-msg");
+
+async function getBooks(){
+  const data = await getDocs(booksCollectionRef);
+  const books = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
+  myLibrary = books.map(book => new Book(book.id, book.title, book.author, book.pages, book.read))
+}
+
+async function createBook(book) {
+  await addDoc(booksCollectionRef, {
+    title: book.title,
+    author: book.author,
+    pages: book.pages,
+    read: book.read,
+  });
+}
+
+async function deleteBook(id) {
+  const bookDoc = doc(db, 'books', id);
+  await deleteDoc(bookDoc);
+}
+
+async function updateBookStatus(e, id) {
+  const bookDoc = doc(db, 'books', id);
+  const newFields = { read: e.target.checked };
+  await updateDoc(bookDoc, newFields);
+}
+
+window.onload = () => {
+  getBooks().then(() => {
+    displayBooks();
+  })
+}
 
 class Book {
-  constructor(read, index, title, author, pages) {
-    this.index = index;
+  constructor(id, title, author, pages, read) {
+    this.id = id;
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -15,7 +50,7 @@ class Book {
   }
   toggleRead() {
     this.read = !this.read;
-    console.log(`Read property toggled for book ${this.index}. Read set to ${this.read}`);
+    console.log(`Read property toggled for book ${this.id}. Read set to ${this.read}`);
   }
 }
 
@@ -56,7 +91,6 @@ function setBook() {
 
   // Create a book object from the Book prototype
   let book = Object.create(Book.prototype);
-  book.index = indexCount;
   book.title = inputVals.title;
   book.author = inputVals.author;
   book.pages = inputVals.pages;
@@ -65,15 +99,51 @@ function setBook() {
   return book;
 }
 
-function addBookToLibrary() {
+
+async function addBookToLibrary() {
   let book = setBook();
 
   // Check if the input values are empty
   if (book.title === "" || book.author === "" || book.pages === "") return;
-  
-  myLibrary.push(book);
 
-  indexCount++;
+  createBook(book).then(() => {
+    getBooks().then(() => {
+      displayBooks();
+    })
+  })
+}
+
+document.addEventListener("click", function(event) { // Adding event listeners to all remove and toggle buttons
+  const target = event.target;
+
+  if (target.matches("[data-remove]")) {
+    // Handle remove button click
+    removeBook(event);
+  }
+
+  if (target.matches("[data-toggle]")) {
+    // Handle read checkbox click
+    toggleReadProperty(event);
+  }
+});
+
+async function removeBook(e) {
+  // Get the row of the corresponding remove button
+  const parentRow = e.target.parentNode.parentNode;
+  
+  const bookId = parentRow.dataset.index;
+
+  parentRow.remove();
+
+  deleteBook(bookId);
+}
+
+function toggleReadProperty(e) {
+  // Find book that is read toggled 
+  const foundBook = myLibrary.find(book => book.id == e.target.dataset.toggle);
+  // Toggle read using the constructor function for the object
+
+  updateBookStatus(e, foundBook.id);
 }
 
 function displayBooks() {
@@ -81,38 +151,18 @@ function displayBooks() {
   let content = "";
 
   myLibrary.forEach(book => {
-    content += `<tr data-index="${book.index}">
+    content += `<tr data-index="${book.id}">
     <td>${book.title}</td>
     <td>${book.author}</td>
     <td>${book.pages}</td>
     <td>
-      <input type="checkbox" name="read" data-index="${book.index}" onclick=toggleReadProperty(this)>
+      <input data-toggle="${book.id}" type="checkbox" name="read" ${book.read ? "checked" : ""}>
     </td>
     <td>
-      <button class="remove" type="button" onclick="removeBook(this)">Remove</button>
+      <button data-remove="${book.id}" class="remove" type="button">Remove</button>
     </td>
   </tr>`
   });
   
   bookTableBody.innerHTML = content;
-}
-
-function removeBook(obj) {
-  // Get the row of the corresponding remove button
-  const parentRow = obj.parentNode.parentNode;
-  
-  let parentRowIndex = parentRow.dataset.index;
-
-  parentRow.remove();
-
-  // Find index of book that matches parentRowIndex and remove it from the library array
-  const foundBookIndex = myLibrary.find(book => book.index == parentRowIndex);
-  myLibrary.splice(foundBookIndex, 1);
-}
-
-function toggleReadProperty(obj) {
-  // Find book that is read toggled 
-  const foundBook = myLibrary.find(book => book.index == obj.dataset.index);
-  // Toggle read using the constructor function for the object
-  foundBook.toggleRead();
 }
